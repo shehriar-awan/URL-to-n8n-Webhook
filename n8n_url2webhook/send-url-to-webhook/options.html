@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>URL to n8n → Options</title>
+    <style>
+      body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:20px;max-width:900px}
+      h1{font-size:20px;margin:0 0 16px}
+      h3{font-size:16px;margin:20px 0 10px;border-bottom:1px solid #eee;padding-bottom:6px}
+      label{font-size:13px;display:block;margin:12px 0 6px;font-weight:500}
+      input[type=text], textarea, select{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
+      .row{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+      .col{flex:1}
+      table{width:100%;border-collapse:collapse;margin-top:6px;table-layout:fixed}
+      table th{background:#f5f5f5;font-weight:600;text-align:left}
+      table th:nth-child(1){width:25%}
+      table th:nth-child(2){width:45%}
+      table th:nth-child(3){width:15%}
+      table th:nth-child(4){width:15%}
+      td,th{border:1px solid #ddd;padding:8px;font-size:13px;vertical-align:middle}
+      td input{width:100%;box-sizing:border-box;margin:0}
+      button{padding:8px 14px;border:1px solid #ccc;background:#fff;border-radius:6px;cursor:pointer;font-size:13px}
+      button:hover{background:#f5f5f5}
+      button:disabled{opacity:0.5;cursor:not-allowed}
+      .muted{color:#666;font-size:12px;margin-top:4px}
+      .toast{margin-left:8px;padding:6px 12px;border-radius:4px;font-weight:500}
+      .toast.success{color:#107c10;background:#e6f4ea}
+      .toast.error{color:#a80000;background:#fce8e6}
+      .switch{display:flex;gap:8px;align-items:center}
+      .test-result{display:block;margin-top:4px;font-size:11px;padding:4px;border-radius:3px;word-wrap:break-word}
+      .test-result.success{color:#107c10;background:#e6f4ea}
+      .test-result.error{color:#a80000;background:#fce8e6}
+      .test-result.loading{color:#666;background:#f5f5f5}
+      #addProfile{margin-top:8px}
+    </style>
+  </head>
+  <body>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h1 style="margin:0">URL to n8n → Options</h1>
+      <span id="version" style="font-size:11px;color:#666"></span>
+    </div>
+
+    <h3>Webhooks</h3>
+    <div style="margin-bottom:8px;display:flex;gap:8px">
+      <button id="testAllBtn" style="font-size:12px;padding:6px 10px">Test All Webhooks</button>
+      <button id="exportBtn" style="font-size:12px;padding:6px 10px">Export Settings</button>
+      <button id="importBtn" style="font-size:12px;padding:6px 10px">Import Settings</button>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+    </div>
+    <div id="profiles"></div>
+    <button id="addProfile">Add webhook</button>
+
+    <h3>Payload Settings</h3>
+    <div class="row">
+      <div class="col">
+        <label>Payload Mode</label>
+        <select id="payloadMode">
+          <option value="plain">text/plain (URL only)</option>
+          <option value="json">application/json (with metadata)</option>
+        </select>
+      </div>
+    </div>
+
+    <label>JSON Template (when JSON mode is selected)</label>
+    <textarea id="jsonTemplate" rows="6"></textarea>
+    <div class="muted">Placeholders: {{url}}, {{title}}, {{isoTimestamp}}, {{selection}}, {{ogTitle}}, {{ogType}}, {{publishedTime}}, {{source}}</div>
+
+    <h3>URL Processing</h3>
+    <div class="row">
+      <div class="col">
+        <label class="switch"><input id="useCanonical" type="checkbox" /> Use canonical URL from page metadata</label>
+      </div>
+    </div>
+
+    <label>Strip query parameters (comma-separated, supports wildcards like utm_*)</label>
+    <input id="stripParams" type="text" placeholder="utm_*,fbclid,gclid" />
+
+    <h3>Additional Data</h3>
+    <div class="row">
+      <div class="col">
+        <label class="switch"><input id="includeSelection" type="checkbox" /> Include selected text from page</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="switch"><input id="includeOgData" type="checkbox" /> Include Open Graph metadata (title, type, published time)</label>
+      </div>
+    </div>
+
+    <h3>Notifications</h3>
+    <div class="row">
+      <div class="col">
+        <label class="switch"><input id="showNotifications" type="checkbox" /> Show desktop notifications on successful sends</label>
+      </div>
+    </div>
+
+    <h3>Custom Headers</h3>
+    <table>
+      <thead><tr><th>Name</th><th>Value</th><th></th></tr></thead>
+      <tbody id="headersBody"></tbody>
+    </table>
+    <button id="addHeader">Add header</button>
+
+    <h3>HMAC Signature</h3>
+    <label>Secret (optional, min 16 characters recommended)</label>
+    <input id="hmacSecret" type="password" placeholder="Enter a strong secret key" />
+    <div class="muted">If set, adds an X-Signature header with HMAC-SHA256 signature for request verification</div>
+
+    <div style="margin-top:12px">
+      <button id="save">Save</button>
+      <span id="toast" class="toast"></span>
+    </div>
+
+    <script type="module" src="options.js"></script>
+  </body>
+  </html>
+
+

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>URL to n8n</title>
+    <style>
+      body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:12px;min-width:320px;max-width:400px}
+      .status{font-weight:600;margin-bottom:8px;padding:8px;border-radius:6px;min-height:20px;word-wrap:break-word;white-space:normal}
+      .ok{color:#107c10;background:#e6f4ea}
+      .err{color:#a80000;background:#fce8e6}
+      ul{list-style:none;padding:0;margin:8px 0 0 0;max-height:200px;overflow:auto}
+      li{font-size:12px;padding:6px 0;border-bottom:1px solid #eee}
+      .muted{color:#666}
+      .row{display:flex;gap:8px;align-items:center}
+      button{padding:6px 10px;border:1px solid #ddd;background:#fafafa;border-radius:6px;cursor:pointer}
+      button:disabled{opacity:0.5;cursor:not-allowed}
+    </style>
+  </head>
+  <body>
+    <div id="emptyState" style="display:none;text-align:center;padding:20px">
+      <div style="font-size:48px;margin-bottom:12px">🔗</div>
+      <div style="font-weight:600;margin-bottom:8px">No Webhooks Configured</div>
+      <div style="font-size:12px;color:#666;margin-bottom:12px">Add a webhook to start sending URLs</div>
+      <button id="openOptionsBtn" style="width:100%">Open Settings</button>
+    </div>
+
+    <div id="mainContent">
+      <div id="status" class="status">Ready</div>
+      <div class="row" style="margin-top:8px">
+        <select id="profileSelect" style="flex:1"></select>
+        <button id="sendBtn">Send</button>
+      </div>
+      <div id="forceSendRow" class="row" style="margin-top:4px;display:none;justify-content:flex-end">
+        <button id="forceSendBtn" style="font-size:11px;padding:4px 8px;border-color:#d93025;color:#d93025">⚠ Force Send Anyway</button>
+      </div>
+      <div id="queueInfo" class="muted" style="margin-top:8px;font-size:11px"></div>
+      <div class="row" style="margin-top:8px;justify-content:space-between">
+        <button id="clearQueueBtn" title="Clear all queued items" style="font-size:11px;padding:4px 8px;display:none;border-color:#d93025;color:#d93025">Clear Queue</button>
+        <button id="retry" title="Retry failed queue items" aria-label="Retry queue" style="font-size:11px;padding:4px 8px">↻ Retry Queue</button>
+      </div>
+      <div id="historySection" style="margin-top:12px;display:none">
+        <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px;border-bottom:1px solid #eee;padding-bottom:4px">Recent Activity</div>
+        <div id="historyList" style="max-height:150px;overflow-y:auto;font-size:11px"></div>
+      </div>
+      <div style="margin-top:12px;text-align:center">
+        <button id="openOptionsLink" style="font-size:11px;padding:4px 8px;background:transparent;border:none;color:#1a73e8;cursor:pointer">⚙ Settings</button>
+      </div>
+    </div>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
+
+
